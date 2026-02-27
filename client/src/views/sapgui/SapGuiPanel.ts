@@ -381,11 +381,12 @@ export class SapGuiPanel {
                     width="100%" 
                     height="calc(100vh - 80px)"
                     frameborder="0"
-                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation allow-downloads"
+                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation allow-downloads allow-modals"
                     title="SAP GUI for HTML - ${this._objectName}"
                     onload="handleSapGuiLoad()"
                     onerror="handleSapGuiError()"
                     style="border: 1px solid var(--vscode-panel-border); background: white;"
+                    allowfullscreen
                 ></iframe>
             </div>
             <script>
@@ -636,8 +637,9 @@ export class SapGuiPanel {
                     width="100%" 
                     height="calc(100vh - 60px)"
                     frameborder="0"
-                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation"
+                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation allow-downloads allow-modals"
                     title="SAP GUI for HTML - ${this._objectName}"
+                    allowfullscreen
                 ></iframe>
             </div>
         `
