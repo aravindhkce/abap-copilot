@@ -131,22 +131,14 @@ export class SapGuiPanel {
           case "webviewLog":
             return
           case "webGuiLoaded":
+          case "sapGuiLoaded":
             return
           case "webGuiError":
+          case "sapGuiError":
             log("❌ WEBVIEW: SAP GUI iframe failed to load")
             window.showErrorMessage(
               "Failed to load SAP GUI in WebView. Try refreshing or using external GUI."
             )
-            return
-          case "webGuiLoaded":
-            return
-          case "webGuiError":
-            window.showErrorMessage(
-              "Failed to load Direct WebGUI in WebView. Try refreshing or using external GUI."
-            )
-            return
-
-          case "webviewLog":
             return
         }
       },
@@ -299,8 +291,6 @@ export class SapGuiPanel {
                 ></iframe>
             </div>
             <script>
-                const vscode = acquireVsCodeApi();
-                
                 function handleWebGuiLoad() {
                     vscode.postMessage({ command: 'webviewLog', message: '✅ Direct WebGUI iframe onload event fired' });
                     
@@ -400,8 +390,6 @@ export class SapGuiPanel {
                 ></iframe>
             </div>
             <script>
-                const vscode = acquireVsCodeApi();
-                
                 function handleSapGuiLoad() {
                     vscode.postMessage({ command: 'webviewLog', message: '✅ WebView SAP GUI iframe loaded successfully' });
                     
@@ -712,6 +700,8 @@ export class SapGuiPanel {
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="Content-Security-Policy" content="default-src 'none'; frame-src https: http:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src https: data:;">
+                <!-- frame-src allows http: for legacy SAP servers that may not support HTTPS -->
                 <title>SAP GUI - ${this._objectName}</title>
                 <style>
                     body {
@@ -752,13 +742,13 @@ export class SapGuiPanel {
                 </style>
             </head>
             <body>
-                ${content}
                 <script>
                     const vscode = acquireVsCodeApi();
                     function refreshExecution() {
                         vscode.postMessage({ command: 'refresh' });
                     }
                 </script>
+                ${content}
             </body>
             </html>
         `
