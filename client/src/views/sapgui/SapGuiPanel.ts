@@ -17,6 +17,16 @@ export class SapGuiPanel {
 
   public static readonly viewType = "ABAPSapGui"
 
+  /**
+   * Shared iframe sandbox permissions for all SAP WebGUI iframes.
+   * IMPORTANT: `allow-modals` is required because SAP's ClickjackingFramingProtection.js
+   * calls alert() when loaded inside an iframe. Without it, the alert is silently blocked
+   * and SAP's protection script blanks out the page content, resulting in an empty webview.
+   * All iframe rendering methods MUST use this constant to stay consistent.
+   */
+  private static readonly IFRAME_SANDBOX =
+    "allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation allow-downloads allow-modals"
+
   private readonly _panel: vscode.WebviewPanel
   private readonly _extensionUri: vscode.Uri
   private _disposables: vscode.Disposable[] = []
@@ -279,7 +289,7 @@ export class SapGuiPanel {
                     width="100%" 
                     height="calc(100vh - 60px)"
                     frameborder="0"
-                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation allow-downloads allow-modals"
+                    sandbox="${SapGuiPanel.IFRAME_SANDBOX}"
                     title="SAP WebGUI - ${this._objectName}"
                     onload="handleWebGuiLoad()"
                     onerror="handleWebGuiError()"
@@ -381,7 +391,7 @@ export class SapGuiPanel {
                     width="100%" 
                     height="calc(100vh - 80px)"
                     frameborder="0"
-                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation allow-downloads allow-modals"
+                    sandbox="${SapGuiPanel.IFRAME_SANDBOX}"
                     title="SAP GUI for HTML - ${this._objectName}"
                     onload="handleSapGuiLoad()"
                     onerror="handleSapGuiError()"
@@ -637,7 +647,7 @@ export class SapGuiPanel {
                     width="100%" 
                     height="calc(100vh - 60px)"
                     frameborder="0"
-                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation allow-downloads allow-modals"
+                    sandbox="${SapGuiPanel.IFRAME_SANDBOX}"
                     title="SAP GUI for HTML - ${this._objectName}"
                     allowfullscreen
                 ></iframe>
